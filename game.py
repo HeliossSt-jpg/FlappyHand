@@ -111,11 +111,8 @@ class Engel:
             (self.x + self.GENISLIK + 5, alt_baslangic + 20),
             self.renk, -1
         )
-
-
-# ──────────────────────────────────────────────
+        
 # OYUN SINIFI
-# ──────────────────────────────────────────────
 
 class Oyun:
     # Oyunun ana mantığını yönetir.

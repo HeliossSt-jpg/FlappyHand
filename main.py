@@ -24,6 +24,7 @@ def main():
     menu    = Menu()
 
     durum = DURUM_BEKLIYOR      # Oyun başlangıç durumu
+    bitti_yumruk_bekleniyor = False  # Bitti ekranında yeniden başlatmak için yumruk bekleniyor mu?
 
     print('Başlatılıyor... Çıkmak için Q tuşuna bas.')
 
@@ -87,12 +88,15 @@ def main():
                 break
 
         elif durum == DURUM_BITTI:
-            # Oyun bitti ekranı 
             oyun.ciz(kare)
             _bitti_ekrani_ciz(kare, oyun.skor)
 
-            # Yumruk yapınca yeniden başlat
-            if jest == 'yumruk':
+            # Yumrukla başlatmak için önce eli çekip tekrar yumruk yapması lazım
+            if jest != 'yumruk':
+                bitti_yumruk_bekleniyor = True
+
+            if jest == 'yumruk' and bitti_yumruk_bekleniyor:
+                bitti_yumruk_bekleniyor = False
                 oyun.sifirla()
                 durum = DURUM_OYNUYOR
 
