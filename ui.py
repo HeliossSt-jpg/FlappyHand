@@ -1,26 +1,17 @@
-# ui.py
 # Oyunun menü ekranını ve buton mantığını yöneten modül
 # El işaretiyle buton seçimi bu dosyada gerçekleşir
 
 import cv2
 
-# ──────────────────────────────────────────────
 # EKRAN BOYUTU (game.py ile aynı olmalı)
-# ──────────────────────────────────────────────
 
 GENISLIK = 640
 YUKSEKLIK = 480
 
-
-# ──────────────────────────────────────────────
 # BUTON SINIFI
-# ──────────────────────────────────────────────
 
 class Buton:
-    """
-    Ekranda dikdörtgen şeklinde görünen, el işaretiyle
-    tıklanabilen buton nesnesi.
-    """
+    # Ekranda dikdörtgen şeklinde görünen, el işaretiyle tıklanabilen buton nesnesi.
 
     def __init__(self, x, y, genislik, yukseklik, yazi):
         self.x = x
@@ -31,18 +22,15 @@ class Buton:
         self.uzerinde = False       # İşaret parmağı butonun üzerinde mi?
 
     def nokta_icinde_mi(self, px, py):
-        """
-        Verilen (px, py) koordinatı butonun içinde mi?
-        Menü buton seçimi için kullanılır.
-        """
+        # Verilen (px, py) koordinatı butonun içinde mi?
+        
         return (self.x < px < self.x + self.genislik and
                 self.y < py < self.y + self.yukseklik)
 
     def ciz(self, kare):
-        """
-        Butonu ekrana çizer.
-        İşaret parmağı üzerine gelince renk değişir (hover efekti).
-        """
+    
+        #Butonu ekrana çizer, işaret parmağı üzerine gelince renk değişir (hover efekti).
+        
         # Hover durumuna göre renk seç
         renk = (0, 200, 100) if self.uzerinde else (50, 50, 50)
 
@@ -70,16 +58,10 @@ class Buton:
                     cv2.FONT_HERSHEY_SIMPLEX,
                     0.8, (255, 255, 255), 2)
 
-
-# ──────────────────────────────────────────────
 # MENU SINIFI
-# ──────────────────────────────────────────────
 
 class Menu:
-    """
-    Oyun duraklatıldığında ekrana gelen STOP menüsü.
-    İki buton içerir: Devam Et ve Çıkış.
-    """
+    #Oyun duraklatıldığında ekrana gelen STOP menüsü, iki buton içerir: Devam Et ve Çıkış.
 
     def __init__(self):
         self.el_bulunamadi_sayaci = 0
@@ -95,21 +77,11 @@ class Menu:
         # İşaret parmağının butona ne kadar süredir üzerinde olduğunu sayar
         # Yanlışlıkla seçimi önlemek için 1 saniye bekler
         self.secim_sayaci = 0
-        self.secim_suresi = 30      # 30 kare ≈ 1 saniye (30 fps varsayımıyla)
+        self.secim_suresi = 30   # 30 kare ≈ 1 saniye (30 fps varsayımıyla)
 
     def guncelle(self, isaret_konumu, jest):
-        """
-        İşaret parmağının konumunu alır, butonların hover
-        durumunu günceller ve seçim yapılıp yapılmadığını döndürür.
-
-        Parametreler:
-            isaret_konumu : (x, y) piksel koordinatı veya None
-            jest : tespit edilen el jesti
-        Dönüş:
-            'devam'  → Devam Et butonuna basıldı
-            'cikis'  → Çıkış butonuna basıldı
-            None     → Henüz seçim yok
-        """
+        #İşaret parmağının konumunu alır, butonların hover durumunu günceller ve seçim yapılıp yapılmadığını döndürür.
+    
         # Varsayılan olarak hover kapalı
         self.devam_butonu.uzerinde = False
         self.cikis_butonu.uzerinde = False
@@ -151,9 +123,8 @@ class Menu:
         return None
 
     def ciz(self, kare):
-        """
-        Yarı saydam koyu arka plan ve iki butonu ekrana çizer.
-        """
+        # Yarı saydam koyu arka plan ve iki butonu ekrana çizer.
+
         # Yarı saydam koyu katman
         katman = kare.copy()
         cv2.rectangle(katman, (0, 0), (GENISLIK, YUKSEKLIK), (0, 0, 0), -1)

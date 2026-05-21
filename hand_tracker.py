@@ -1,5 +1,3 @@
-# hand_tracker.py
-# Kaynak: MediaPipe Hand Landmarker — https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker
 # Kamerayı açan, eli tespit eden ve jest sonucunu döndüren modül
 
 import cv2
@@ -11,9 +9,7 @@ import urllib.request
 import os
 from gestures import jest_tespit_et
 
-# ──────────────────────────────────────────────
 # MODEL DOSYASINI İNDİR (yoksa)
-# ──────────────────────────────────────────────
 
 MODEL_DOSYASI = 'hand_landmarker.task'
 
@@ -26,9 +22,7 @@ if not os.path.exists(MODEL_DOSYASI):
     print('Model indirildi.')
 
 
-# ──────────────────────────────────────────────
 # EL TAKİP SINIFI
-# ──────────────────────────────────────────────
 
 class ElTakipci:
     """
@@ -59,19 +53,13 @@ class ElTakipci:
         self.dedektör = vision.HandLandmarker.create_from_options(secenekler)
 
     def kareyi_isle(self):
-        """
-        Kameradan bir kare okur, eli işler ve sonuçları günceller.
-
-        Dönüş:
-            kare  : işlenmiş görüntü karesi
-            basari: kare okunabildi mi? (bool)
-        """
+        #Kameradan bir kare okur, eli işler ve sonuçları günceller.
 
         basari, kare = self.kamera.read()
         if not basari:
             return None, False
 
-        # Görüntüyü yatay aynala — selfie modu
+        # Görüntüyü yatay aynalar
         kare = cv2.flip(kare, 1)
 
         # MediaPipe RGB formatında görüntü ister
@@ -86,9 +74,7 @@ class ElTakipci:
 
         yukseklik, genislik, _ = kare.shape
 
-        # ──────────────────────────────────────────────
         # EL BULUNDUYSA İŞLE
-        # ──────────────────────────────────────────────
 
         if sonuc.hand_landmarks:
             el = sonuc.hand_landmarks[0]  # İlk eli al
@@ -109,7 +95,7 @@ class ElTakipci:
                 int(bilek.y * yukseklik)
             )
 
-            # İşaret parmağı ucu — landmark 8
+            # İşaret parmağı ucu 
             isaret = el[8]
             self.guncel_isaret_konumu = (
                 int(isaret.x * genislik),
@@ -125,14 +111,12 @@ class ElTakipci:
         return kare, True
 
     def kapat(self):
-        """Kamerayı ve OpenCV pencerelerini düzgünce kapat."""
+        # Kamerayı ve OpenCV pencerelerini düzgünce kapat.
         self.kamera.release()
         cv2.destroyAllWindows()
 
 
-# ──────────────────────────────────────────────
-# TEST
-# ──────────────────────────────────────────────
+# TEST 
 
 if __name__ == '__main__':
     takipci = ElTakipci()
